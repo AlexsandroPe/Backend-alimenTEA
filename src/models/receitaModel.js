@@ -1,13 +1,13 @@
 import connection from "../config/db.js";
 
-export async function getReceitasModel() {
+export async function getRecipes() {
   try {
     const [rows] = await connection.query(
       "SELECT id, nomeReceita, descricaoReceita, modoPreparo FROM receita"
     );
     return rows;
   } catch (error) {
-    console.log("Erro ao buscar receitas no banco: ", error.message);
+    console.log("Error fetching recipes from the database: ", error.message);
   }
 }
 
@@ -25,15 +25,14 @@ export async function getReceitasModel() {
 //   }
 // }
 
-export async function addReceitaModel({nomeReceita, descricaoReceita, modoPreparo}) {
+export async function createRecipe({name, description, preparationMethod}) {
   try {
     const row = await connection.query(
       "INSERT INTO receita(nomeReceita,descricaoReceita, modoPreparo)  VALUES(?,?,?)",
-      [nomeReceita, descricaoReceita, modoPreparo]
+      [name, description, preparationMethod]
     );
-    console.table("Receita adicionada: ", row);
   } catch (error) {
-    console.error("Erro ao adicionar receita no banco\n ", error.message);
+    console.error("Error inserting recipe into the database\n ", error.message);
   }
 }
 

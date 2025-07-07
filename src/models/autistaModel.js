@@ -1,89 +1,85 @@
 import connection from "../config/db.js";
 
-export async function getAutistas() {
+export async function getAutisticUsers() {
   try {
     const [rows] = await connection.execute("SELECT * FROM usuariotea2");
     return rows;
   } catch (error) {
-    console.error("error em algo: ", error.message);
-    throw new Error("Não foi possível buscar os posts.");
+    console.error("Error fetching autistic users: ", error.message);
+    throw new Error("Unable to fetch autistic users.");
   }
 }
 
-export async function getAutistaByID(id) {
+export async function getAutisticUser(autisticUserId) {
   try {
-    const ide = Number(id);
-    const [posts] = await connection.query(
+    const id = Number(autisticUserId);
+    const [rows] = await connection.query(
       "SELECT * FROM usuariotea2 WHERE id = ?",
-      [ide]
+      [id]
     );
-    return posts;
+    return rows;
   } catch (error) {
     console.error(Error.message);
   }
 }
 
-export async function postAutista({
-  nome,
-  imagem,
-  dataNascimento,
-  espectro,
-  alergia,
-  intolerancia,
-  id_usuarioAdministrador,
-  ativo,
-  parentesco,
+export async function createAutisticUser({
+  name,
+  image,
+  birthDate,
+  spectrum,
+  allergy,
+  intolerance,
+  administratorUserId,
+  isActive,
+  relationship,
 }) {
   try {
     const row = await connection.query(
       "INSERT INTO usuariotea2( id_usuarioAdministrador,nome,dataNascimento,espectro,alergia,intolerancia,parentesco,ativo, imgtea) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)",
       [
-        id_usuarioAdministrador,
-        nome,
-        dataNascimento,
-        espectro,
-        alergia,
-        intolerancia,
-        parentesco,
-        ativo,
-        imagem,
+        administratorUserId,
+        name,
+        birthDate,
+        spectrum,
+        allergy,
+        intolerance,
+        relationship,
+        isActive,
+        image,
       ]
     );
 
     console.log(row);
   } catch (error) {
     console.log(id_usuarioAdministrador);
-    console.error("deu pau man: ", error.message);
+    console.error("Error creating autistic user: ", error.message);
   }
 }
 
-export async function updateAutista(data, id) {
+export async function updateAutisticUser(updateData, autisticUserId) {
   try {
-    const arraydosvalores = Object.entries(data);
-    console.log(arraydosvalores);
-    const values = Object.values(data);
-    const provaveisItens = arraydosvalores
-      .map(([keys, values]) => {
-        return `${keys} = ?`;
-      })
-      .join(", ");
+    const entries = Object.entries(updateData);
+    console.log(entries);
+    const values = Object.values(updateData);
+    const setClause = entries.map(([keys]) => `${keys} = ?`).join(", ");
 
-    console.log(provaveisItens);
+    console.log(setClause);
     const result = connection.query(
-      `UPDATE usuariotea2 SET ${provaveisItens} WHERE id = ?`,
-      [...values, id]
+      `UPDATE usuariotea2 SET ${setClause} WHERE id = ?`,
+      [...values, autisticUserId]
     );
-    console.log("DEU CERTO s");
+    console.log("Update successful");
     return result;
   } catch (error) {
     console.error(error);
   }
 }
 
-export function DeleteUserTea(id) {
+export function deleteAutisticUser(autisticUserId) {
   try {
-    const result = connection.query("DELETE FROM usuariotea2 WHERE id = ?", [id]);
-    console.log("Deletado com sucesso");
+    const result = connection.query("DELETE FROM usuariotea2 WHERE id = ?", [autisticUserId]);
+    console.log("Successfully deleted");
   } catch (error) {
     console.error(error);
   }

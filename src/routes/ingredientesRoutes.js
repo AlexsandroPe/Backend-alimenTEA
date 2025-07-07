@@ -1,14 +1,14 @@
 import express from "express";
-import { listarIngredientes, createIngrediente, listarIngredientePorID, delIngredController, updateIngredienteController} from "../controllers/ingredientesControllers.js";
+import { listIngredients, createIngredientController, getIngredientByIdController, deleteIngredientController, updateIngredientController} from "../controllers/ingredientsControllers.js";
 
-const ingredienteRoutes = (app) => {
+const ingredientsRoutes = (app) => {
     app.use(express.json());
 
-    app.get("/ingredientes", listarIngredientes);
-    app.get("/ingrediente/:id", listarIngredientePorID);
-    app.post("/ingrediente", createIngrediente);
-    app.patch("/ingrediente/:id", updateIngredienteController);
-    app.delete("/ingrediente/:id", delIngredController);
+    app.get("/ingredientes", listIngredients);
+    app.get("/ingrediente/:id", getIngredientByIdController);
+    app.post("/ingrediente", createIngredientController);
+    app.patch("/ingrediente/:id", updateIngredientController);
+    app.delete("/ingrediente/:id", deleteIngredientController);
 }
 
-export default ingredienteRoutes;
+export default ingredientsRoutes;

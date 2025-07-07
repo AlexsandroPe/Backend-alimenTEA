@@ -1,15 +1,15 @@
 import express from "express";
-import { listarAutistas, criarAutista, listarAutistaByID, atualizarAutista, deletarAutista} from "../controllers/autistaController.js";
+import { listAutisticUsers, createAutisticUserController, getAutisticUserById, updateAutisticUserController, deleteAutisticUserController} from "../controllers/autistaController.js";
 
-const autistaRoutes = (app) => {
+const autisticUserRoutes = (app) => {
     app.use(express.json());
 
-    app.get("/autistas", listarAutistas);
-    app.get("/autista/:id", listarAutistaByID);
-    app.post("/autista", criarAutista);
-    app.patch("/autista/:id", atualizarAutista);
+    app.get("/autistas", listAutisticUsers);
+    app.get("/autista/:id", getAutisticUserById);
+    app.post("/autista", createAutisticUserController);
+    app.patch("/autista/:id", updateAutisticUserController);
     
-    app.delete("/autista/:id", deletarAutista);
+    app.delete("/autista/:id", deleteAutisticUserController);
 }
 
-export default autistaRoutes;
+export default autisticUserRoutes;

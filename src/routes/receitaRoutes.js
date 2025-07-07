@@ -1,19 +1,14 @@
 import express from "express";
 import {
-  addReceitaController,
-  // delReceitaController,
-  listarReceitasController,
-  // receitaByIdController,
-  // updateReceitaController,
+  createRecipeController,
+  listRecipesController,
 } from "../controllers/receitaController.js";
 
-const receitaRoutes = (app) => {
+const recipesRoutes = (app) => {
   app.use(express.json());
-  app.get("/receitas", listarReceitasController);
-  // app.get("/receita/:id", receitaByIdController);
-  app.post("/receita", addReceitaController);
-  // app.patch("/receita/:id", updateReceitaController);
-  // app.delete("/receita/:id", delReceitaController);
+  
+  app.get("/receitas", listRecipesController);
+  app.post("/receita", createRecipeController);
 };
 
-export default receitaRoutes;
+export default recipesRoutes;

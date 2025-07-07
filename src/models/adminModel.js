@@ -1,12 +1,11 @@
 import connection from "../config/db.js";
 
-export async function getAdmins(email) {
+export async function getAdmin(email) {
   try {
     const [admin] = await connection.query(
-      "SELECT email FROM usuarioadministrador WHERE email = ?",
+      "SELECT nome, email, telefone FROM usuarioadministrador WHERE email = ?",
       [email]
     );
-    // console.log(admin)
     return admin;
   } catch (error) {
     console.error(error);
@@ -15,63 +14,53 @@ export async function getAdmins(email) {
 
 export async function getLogin(email, senha) {
   try {
-    const [[id]] = await connection.query(
+    const [[adminId]] = await connection.query(
       "SELECT id FROM usuarioadministrador WHERE email = ? AND senha = ?",
       [email, senha]
     );
-    console.log("id do model: ", id);
-    return id;
+    return adminId;
   } catch (error) {
-    console.error("erro no login model: ", error);
+    console.error("Error during login query : ", error);
   }
 }
 
 export async function createAdmin({
-  nome,
+  name,
   email,
-  senha,
-  telefone,
-  dataNascimento,
+  password,
+  birthdate,
+  telephone,
 }) {
   const [adminRow] = await connection.query(
     "INSERT INTO usuarioadministrador(nome, email, senha, telefone, dataNascimento) VALUES(?, ?, ?, ?, ?)",
-    [nome, email, senha, telefone, dataNascimento]
+    [name, email, password, telephone, birthdate]
   );
-  console.log(adminRow);
 }
 
-export async function udpateAdminModel(data, id) {
+export async function udpateAdminModel(adminData, adminId) {
   try {
-    const arraydosvalores = Object.entries(data);
-    // console.log(arraydosvalores);
-    const values = Object.values(data);
-    const provaveisItens = arraydosvalores
-      .map(([keys, values]) => {
-        return `${keys} = ?`;
-      })
-      .join(", ");
-    console.log(provaveisItens);
+    const adminEntries = Object.entries(adminData);
+    const values = Object.values(adminData);
+    const setClauses = adminEntries.map(([keys]) => `${keys} = ?`).join(", ");
     const [row] = await connection.query(
-      `UPDATE usuarioadministrador SET ${provaveisItens} WHERE id = ?`,
-      [...values, id]
+      `UPDATE usuarioadministrador SET ${setClauses} WHERE id = ?`,
+      [...values, adminId]
     );
-    console.log("Deu bom");
     return row;
   } catch (error) {
-    console.error("xiiiiii... Deu erro mano..: ", error);
+    console.error("Error during admin update query: ", error);
   }
 }
 
-export function deleteAdmin(id) {
+export function deleteAdmin(adminId) {
   try {
     const result = connection.query(
       "DELETE FROM usuarioadministrador WHERE id = ?",
-      [id]
+      [adminId]
     );
-    console.log("Deletado com sucesso");
+    console.log("Successfully deleted");
     return result;
   } catch (error) {
-    console.error("erro no model:", error);
-    return "erro ";
+    console.error("Error during deleting query:", error);
   }
 }

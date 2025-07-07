@@ -1,52 +1,48 @@
 
-import { getAdmins, createAdmin, udpateAdminModel, deleteAdmin, getLogin} from "../models/adminModel.js";
+import { getAdmin, createAdmin, udpateAdminModel, deleteAdmin, getLogin} from "../models/adminModel.js";
 
-export async function getAdminsController(req, res) { 
+export async function getAdminController(req, res) { 
   try {
       const email = req.params.email
-      const [admin]= await getAdmins(email);
+      const [admin]= await getAdmin(email);
       console.log(admin);
       
       res.status(200).send(admin)
     } catch (error) {
       console.error(error);
-      res.status(404).send("Não foi possivel encontrar os admins");
+      res.status(404).send("Couldn't find the admins");
     }
 }
 
 export async function loginController(req, res) { 
   const {email, senha} = req.body;
-  console.log("req: ", email)
-  console.log("req: ", senha)
-  const id = await getLogin(email, senha);
-  console.log("token", req.token)
-  console.log("retorno", id)
+  const adminId = await getLogin(email, senha);
 
-  if(!id){ 
+  if(!adminId){ 
       return res.status(404).json({
-      message: "usuario nao foi encontrado",
-      idUsuario: null,
+      message: "User not found",
+      adminId: null,
     });
   }
 
   res.status(200).json({
-    message: "Login bem sucedido",
+    message: "Successful login",
     email: true,
     token: req.token,
-    senha: true,
-    idUsuario: id,
+    password: true,
+    adminId: adminId,
   })
 }
 
-export async function criarAdmin(req, res) {
+export async function createAdminController(req, res) {
   try {
-    const admin = req.body;
+    const adminData = req.body;
     await createAdmin({
-      nome: admin.nome,
-      senha: admin.senha,
-      email: admin.email,
-      dataNascimento: admin.dataNascimento,
-      telefone: admin.telefone,
+      name: adminData.name,
+      password: adminData.password,
+      email: adminData.email,
+      birthDate: adminData.birthDate,
+      telephone: adminData.telephone,
     });
   }
   catch (error) {
@@ -55,26 +51,26 @@ export async function criarAdmin(req, res) {
 }
 export async function updateAdmin(req, res) {
   try {
-    const adminID = req.params.id;
+    const adminID = Number(req.params.id);
     const adminUpdateData = req.body;
-    const updateReturn = await udpateAdminModel(adminUpdateData, adminID);
-    if (updateReturn !== null) { 
-      console.log("Valor update: ", updateReturn);
-      res.status(200).send("Admin atualizado com sucesso")
+    const updateResult = await udpateAdminModel(adminUpdateData, adminID);
+    if (updateResult !== null) { 
+      console.log("Admin update result: ", updateResult);
+      res.status(200).send("Admin successfully updated")
     }
   } catch (error) {
     console.error("Erro no controler: ", error)
   }
 }
 
-export async function deletarAdmin(req, res) {
+export async function deleteAdminController(req, res) {
   try {
-    const delAdmin = Number(req.params.id);
-    const delAdminReturn = await deleteAdmin(delAdmin);
-    console.log("delete return: ", delAdminReturn)
-     res.status(200).send("Administrador deletado com sucesso")
+    const adminId = Number(req.params.id);
+    const deleteResult = await deleteAdmin(adminId);
+    console.log("delete result: ", deleteResult)
+     res.status(200).send("Administrator successfully deleted")
   } catch (error) {
-    console.error("Erro ao deletar admnistrador", error)
-    res.status(400).send("Erro ao deletar administrador")
+    console.error("Error deleting admin", error)
+    res.status(400).send("Error deleting admin")
   }
 }

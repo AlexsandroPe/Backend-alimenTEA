@@ -1,37 +1,37 @@
-import { addReceitaModel,getReceitasModel } from "../models/receitaModel.js";
+import { createRecipe, getRecipes } from "../models/receitaModel.js";
 
-export async function listarReceitasController(req, res) {
+export async function listRecipesController(req, res) {
   try {
-    const receitas = await getReceitasModel();
-   if(receitas.length == 0) {
-    res.status(204).json("Array vazio, não há receitas")
-    return receitas;
+    const recipes = await getRecipes();
+   if(recipes.length == 0) {
+    res.status(204).json("No recipes")
+    return recipes;
    } else {
-    res.status(200).json(receitas)
-    return receitas;
+    res.status(200).json(recipes)
+    return recipes;
    }
 
   } catch (error) {
     console.error(error);
-    res.status(404).send("Não foi possivel encontrar as receitas");
+    res.status(404).send("Couldn't find the recipes");
   }
 }
 
 
-export async function addReceitaController(req, res) {
+export async function createRecipeController(req, res) {
   try {
-    const receitaData = req.body;
-    console.log(receitaData);
+    const recipeData = req.body;
 
-    const receitaModelRes = await addReceitaModel({
-      nomeReceita: receitaData.nomeReceita,
-      descricaoReceita: receitaData.descricaoReceita,
-      modoPreparo: receitaData.modoPreparo
+    const recipeResult = await createRecipe({
+      name: recipeData.name,
+      description: recipeData.description,
+      preparationMethod: recipeData.preparationMethod
     });
-    res.status(201).json({ message: "Receita criada com sucesso" });
+
+    res.status(201).json({ message: "Recipe created successfully" });
   } catch (error) {
-    console.error("Erro ao criar receita: ", error);
-    res.status(400).send("Não foi posssível criar a receita: ERRO NO CONTROLLER");
+    console.error("Error creating recipe: ", error);
+    res.status(400).send("It wasn't possible to create the recipe");
   }
 }
 

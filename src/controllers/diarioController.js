@@ -1,33 +1,33 @@
-import { addDiarioModel, getDiarioModel } from "../models/diarioModel.js";
+import { createDiaryModel, getDiaryModel } from "../models/diarioModel.js";
 
-export async function listarDiarioController(req, res) {
+export async function listDiaryController(req, res) {
   try {
-    const idUsuarioTea = req.params.id;
-    const diario = await getDiarioModel(idUsuarioTea);
-    res.status(200).json(diario);
+    const userId  = req.params.id;
+    const diaryEntries  = await getDiaryModel(userId );
+    res.status(200).json(diaryEntries);
   } catch (error) {
     console.error(error);
-    res.status(404).send("Não foi possivel encontrar o diario");
+    res.status(404).send("Unable to find diary entries");
   }
 }
 
 
-export async function addDiarioController(req, res) {
+export async function createDiaryController(req, res) {
   try {
-    const diarioData = req.body;
-    console.log(diarioData.idreceita);
-    console.log(diarioData.idusuariotea);
-    console.log(diarioData.datarefeicao);
+    const diaryData  = req.body;
+    console.log(diaryData.recipeId);
+    console.log(diaryData.userTeaId);
+    console.log(diaryData.mealDate);
 
-    const diarioModelRes = await addDiarioModel({
-        id_receita: diarioData.idreceita,
-        id_usuariotea: diarioData.idusuariotea,
-        refeicaodia: diarioData.refeicaodia,
-        dataRefeicao: diarioData.datarefeicao
+    const result  = await createDiaryModel({
+        recipeId: diaryData.recipeId,
+        userTeaId: diaryData.userTeaId,
+        mealTime: diaryData.mealTime,
+        mealDate: diaryData.mealDate
     });
-    res.status(201).json({ message: "Diario criado com sucesso" });
+    res.status(201).json({ message: "Diary entry created successfully" });
   } catch (error) {
-    console.error("Erro ao criar diario: ", error);
-    res.status(400).send("Não foi posssível criar diario: ERRO NO CONTROLLER");
+    console.error("Error creating diary entry: ", error);
+    res.status(400).send("Unable to create diary entry: CONTROLLER ERROR");
   }
 }
