@@ -15,8 +15,8 @@ export async function getAdminController(req, res) {
 }
 
 export async function loginController(req, res) { 
-  const {email, senha} = req.body;
-  const adminId = await getLogin(email, senha);
+  const {email, password} = req.body;
+  const adminId = await getLogin(email, password);
 
   if(!adminId){ 
       return res.status(404).json({
@@ -37,10 +37,11 @@ export async function loginController(req, res) {
 export async function createAdminController(req, res) {
   try {
     const adminData = req.body;
+    console.log(adminData)
     await createAdmin({
       name: adminData.name,
-      password: adminData.password,
       email: adminData.email,
+      password: adminData.password,
       birthDate: adminData.birthDate,
       telephone: adminData.telephone,
     });

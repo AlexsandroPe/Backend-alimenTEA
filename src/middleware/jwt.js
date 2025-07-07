@@ -5,9 +5,9 @@ const secret = process.env.SECRET;
 
 function auth(req, res, next) {
     
-    const {email, senha} = req.body;
+    const {email, password} = req.body;
 
-    if(!email || !senha) {
+    if(!email || !password) {
         return res.json({
             email: false,
             senha: false,
@@ -20,4 +20,4 @@ function auth(req, res, next) {
     next()
 }
 
-export default auth;
+export default auth;    

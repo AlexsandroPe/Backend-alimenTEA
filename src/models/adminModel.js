@@ -12,11 +12,11 @@ export async function getAdmin(email) {
   }
 }
 
-export async function getLogin(email, senha) {
+export async function getLogin(email, password) {
   try {
     const [[adminId]] = await connection.query(
       "SELECT id FROM usuarioadministrador WHERE email = ? AND senha = ?",
-      [email, senha]
+      [email, password]
     );
     return adminId;
   } catch (error) {
@@ -24,17 +24,17 @@ export async function getLogin(email, senha) {
   }
 }
 
-export async function createAdmin({
-  name,
-  email,
-  password,
-  birthdate,
-  telephone,
-}) {
-  const [adminRow] = await connection.query(
-    "INSERT INTO usuarioadministrador(nome, email, senha, telefone, dataNascimento) VALUES(?, ?, ?, ?, ?)",
-    [name, email, password, telephone, birthdate]
-  );
+export async function createAdmin({name, email, password, birthDate, telephone}) {
+  try {
+    const [adminRow] = await connection.query(
+      "INSERT INTO usuarioadministrador(nome, email, senha, telefone, dataNascimento) VALUES(?, ?, ?, ?, ?)",
+      [name, email, password, telephone, birthDate]
+    );
+
+    console.log("Admin created");
+  } catch(error) {
+    console.error("Error creating admin", error.message);
+  }
 }
 
 export async function udpateAdminModel(adminData, adminId) {
