@@ -7,9 +7,12 @@ import recipesRoutes from "./src/routes/receitaRoutes.js";
 import diaryRoutes from "./src/routes/diarioRoutes.js"
 
 const app = express();
+
+app.use('/admin', adminRoutes);
+
+
 autisticUserRoutes(app);
 ingredientsRoutes(app);
-adminRoutes(app);
 recipesRoutes(app);
 diaryRoutes(app);
 

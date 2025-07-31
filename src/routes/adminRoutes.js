@@ -8,13 +8,15 @@ import {
 } from "../controllers/adminController.js";
 import auth from "../middleware/jwt.js";
 
-const adminRoutes = (app) => {
-  app.use(express.json());
-  app.get("/admin/:email", getAdminController);
-  app.post("/login", auth, loginController);
-  app.post("/admin", createAdminController);
-  app.patch("/admin/:id", updateAdmin);
-  app.delete("/admin/:id", deleteAdminController);
+const router = express.Router();
+
+
+const adminRoutes = () => {
+  router.get("/:email", getAdminController);
+  router.post("/login", auth, loginController);
+  router.post("/", createAdminController);
+  router.patch("/:id", updateAdmin);
+  router.delete("/:id", deleteAdminController);
 };
 
 export default adminRoutes;
