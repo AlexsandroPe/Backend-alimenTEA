@@ -8,13 +8,16 @@ import diaryRoutes from "./src/routes/diarioRoutes.js"
 
 const app = express();
 
+app.use(express.json());
+
 app.use('/admin', adminRoutes);
+app.use('/ingredients', ingredientsRoutes);
+app.use('/autistas', autisticUserRoutes);
+app.use('/recipes', recipesRoutes);
+app.use('/diary', diaryRoutes);
 
 
-autisticUserRoutes(app);
-ingredientsRoutes(app);
-recipesRoutes(app);
-diaryRoutes(app);
+
 
 app.listen(3000, () => {
   console.log("Server running...");

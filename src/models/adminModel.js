@@ -6,9 +6,10 @@ export async function getAdmin(email) {
       "SELECT nome, email, telefone FROM usuarioadministrador WHERE email = ?",
       [email]
     );
+    console.log(admin)
     return admin;
   } catch (error) {
-    console.error(error);
+    console.error(error, "erro");
   }
 }
 

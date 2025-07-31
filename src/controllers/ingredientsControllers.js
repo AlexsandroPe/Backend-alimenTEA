@@ -14,6 +14,7 @@ export async function listIngredients(req, res) {
 export async function getIngredientByIdController(req, res) {
   try {
     const ingredient = await getIngredientByID(req.params.id);
+    
     res.status(200).json(ingredient);
   } catch (error) {
     console.error("Error fetching ingredient by ID: ", error);

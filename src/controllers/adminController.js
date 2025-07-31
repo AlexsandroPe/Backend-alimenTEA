@@ -5,12 +5,13 @@ export async function getAdminController(req, res) {
   try {
       const email = req.params.email
       const [admin]= await getAdmin(email);
-      console.log(admin);
-      
-      res.status(200).send(admin)
+      console.log(admin, "undefined");
+      if(!admin) {
+        return res.status(404).json({message:"couldn't find admin"})
+      }
+      res.status(200).json(admin)
     } catch (error) {
-      console.error(error);
-      res.status(404).send("Couldn't find the admins");
+      return res.status(500).json({message: "server error"});
     }
 }
 

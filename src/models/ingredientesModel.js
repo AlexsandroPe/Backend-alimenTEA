@@ -13,7 +13,7 @@ export async function getIngredientByID(id) {
   try {
     const ingredientID = Number(id);
     const [result] = await connection.query(
-      "SELECT * FROM ingredientes WHERE id = ?",
+      "SELECT * FROM alimentos WHERE id = ?",
       [ingredientID]
     );
     console.log(result);

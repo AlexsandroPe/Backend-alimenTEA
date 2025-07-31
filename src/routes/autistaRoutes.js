@@ -1,15 +1,11 @@
 import express from "express";
 import { listAutisticUsers, createAutisticUserController, getAutisticUserById, updateAutisticUserController, deleteAutisticUserController} from "../controllers/autistaController.js";
 
-const autisticUserRoutes = (app) => {
-    app.use(express.json());
+const router = express.Router();
+    router.get("/", listAutisticUsers);
+    router.get("/:id", getAutisticUserById);
+    router.post("/", createAutisticUserController);
+    router.patch("/:id", updateAutisticUserController);
+    router.delete("/:id", deleteAutisticUserController);
 
-    app.get("/autistas", listAutisticUsers);
-    app.get("/autista/:id", getAutisticUserById);
-    app.post("/autista", createAutisticUserController);
-    app.patch("/autista/:id", updateAutisticUserController);
-    
-    app.delete("/autista/:id", deleteAutisticUserController);
-}
-
-export default autisticUserRoutes;
+export default router;

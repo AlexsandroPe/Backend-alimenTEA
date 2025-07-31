@@ -4,11 +4,9 @@ import {
   listRecipesController,
 } from "../controllers/receitaController.js";
 
-const recipesRoutes = (app) => {
-  app.use(express.json());
-  
-  app.get("/receitas", listRecipesController);
-  app.post("/receita", createRecipeController);
-};
+const router = express.Router();
 
-export default recipesRoutes;
+  router.get("/", listRecipesController);
+  router.post("/", createRecipeController);
+
+export default router;

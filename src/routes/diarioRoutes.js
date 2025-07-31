@@ -4,11 +4,9 @@ import {
   listDiaryController,
 } from "../controllers/diarioController.js";
 
-const diaryRoutes = (app) => {
-  app.use(express.json());
+const router = express.Router();
 
-  app.get("/diario/:id", listDiaryController);
-  app.post("/diario", createDiaryController);
-};
+  router.get("/:id", listDiaryController);
+  router.post("/", createDiaryController);
 
-export default diaryRoutes;
+export default router;
