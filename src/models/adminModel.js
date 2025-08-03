@@ -19,6 +19,7 @@ export async function getLogin(email, password) {
       "SELECT id FROM usuarioadministrador WHERE email = ? AND senha = ?",
       [email, password]
     );
+    console.log(adminId)
     return adminId;
   } catch (error) {
     console.error("Error during login query : ", error);

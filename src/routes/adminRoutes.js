@@ -6,14 +6,14 @@ import {
   deleteAdminController,
   loginController,
 } from "../controllers/adminController.js";
-import auth from "../middleware/jwt.js";
+import tokenVerify from "../middleware/tokenverify.js"
 
 const router = express.Router();
 
   router.get("/:email", getAdminController);
-  router.post("/login", auth, loginController);
+  router.post("/login", loginController);
   router.post("/", createAdminController);
-  router.patch("/:id", updateAdmin);
-  router.delete("/:id", deleteAdminController);
+  router.patch("/:id", tokenVerify, updateAdmin);
+  router.delete("/:id", tokenVerify, deleteAdminController);
 
 export default router;

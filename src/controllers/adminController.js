@@ -1,5 +1,7 @@
 
 import { getAdmin, createAdmin, udpateAdminModel, deleteAdmin, getLogin} from "../models/adminModel.js";
+import jsonwebtoken from "jsonwebtoken"
+const secret = process.env.SECRET;
 
 export async function getAdminController(req, res) { 
   try {
@@ -16,21 +18,33 @@ export async function getAdminController(req, res) {
 }
 
 export async function loginController(req, res) { 
+  console.log("passou do middleware")
   const {email, password} = req.body;
+
+  if(!email || !password) {
+      return res.status(400).json({
+          message: "Campos obrigatórios faltando.",
+          email: false,
+          senha: false,
+      })
+  }
+
   const adminId = await getLogin(email, password);
 
   if(!adminId){ 
-      return res.status(404).json({
+    return res.status(404).json({
       message: "User not found",
       adminId: null,
     });
   }
 
+  const token = jsonwebtoken.sign({useremail: email}, secret, {expiresIn: "1h"})
+  
   res.status(200).json({
     message: "Successful login",
     email: true,
-    token: req.token,
     password: true,
+    token: token,
     adminId: adminId,
   })
 }
