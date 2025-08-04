@@ -10,7 +10,7 @@ import tokenVerify from "../middleware/tokenverify.js"
 
 const router = express.Router();
 
-  router.get("/:email", getAdminController);
+  router.get("/:email", tokenVerify, getAdminController);
   router.post("/login", loginController);
   router.post("/", createAdminController);
   router.patch("/:id", tokenVerify, updateAdmin);

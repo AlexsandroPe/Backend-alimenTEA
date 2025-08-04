@@ -18,7 +18,6 @@ export async function getAdminController(req, res) {
 }
 
 export async function loginController(req, res) { 
-  console.log("passou do middleware")
   const {email, password} = req.body;
 
   if(!email || !password) {
@@ -60,9 +59,10 @@ export async function createAdminController(req, res) {
       birthDate: adminData.birthDate,
       telephone: adminData.telephone,
     });
+    res.status(201).json({message: "Admin successfully created"})
   }
   catch (error) {
-    console.error(Error)
+    console.error(error)
   }
 }
 export async function updateAdmin(req, res) {
@@ -70,9 +70,9 @@ export async function updateAdmin(req, res) {
     const adminID = Number(req.params.id);
     const adminUpdateData = req.body;
     const updateResult = await udpateAdminModel(adminUpdateData, adminID);
-    if (updateResult !== null) { 
+    if (updateResult !== null) {
       console.log("Admin update result: ", updateResult);
-      res.status(200).send("Admin successfully updated")
+      res.status(200).json({message:"Admin successfully updated"})
     }
   } catch (error) {
     console.error("Erro no controler: ", error)

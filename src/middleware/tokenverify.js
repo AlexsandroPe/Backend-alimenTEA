@@ -4,9 +4,8 @@ import jwt from "jsonwebtoken";
 const tokenVerify = (req, res, next) => {
     const authtoken = req.headers['authorization'];
     if(!authtoken) {
-        console.log("Não autorizado")
        return res.status(401).json({
-            message: "Usuario não autorizado",
+            message: "Unauthorized",
         })
     }
     
